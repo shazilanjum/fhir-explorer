@@ -1,0 +1,352 @@
+/* Self-hosted variable fonts — both themes' stacks (no external requests).
+   Hum:   Plus Jakarta Sans + JetBrains Mono
+   Lumen: Instrument Serif + Geist + JetBrains Mono */
+@import '@fontsource-variable/plus-jakarta-sans';
+@import '@fontsource-variable/geist';
+@import '@fontsource/instrument-serif';
+@import '@fontsource-variable/jetbrains-mono';
+
+/* Design tokens — :root shared, palette/type/shape per [data-theme]. */
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* Never a horizontal scrollbar; clip, not hidden. */
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  background-color: var(--color-paper-2);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display type. Weight and tracking come from the active theme — Hum is a
+   confident 700 rounded sans, Lumen a delicate 400 classical serif. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-display);
+  font-weight: var(--display-weight);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+/* Thin scrollbars. */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-rule) transparent;
+}
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: var(--color-rule);
+  border-radius: var(--radius-pill);
+}
+
+/* Mono micro-label. In BOTH themes this is the only UPPERCASE surface —
+   which is also Lumen's non-negotiable two-register rule. */
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-ink-2);
+}
+
+/* ---------------------------------------------------------------------------
+   Card surface — one definition, two physics.
+   Hum:   rounded, layered drop shadow, warm hairline ring.
+   Lumen: hairline border + inner emission (lit from within), never dropped.
+   --------------------------------------------------------------------------- */
+.card {
+  background-color: var(--color-paper);
+  /* Manifesto wants a 2px poster rule where Hum wants a 1.5px hairline. */
+  border: var(--card-border-width, 1px) solid var(--color-rule);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transition:
+    transform 220ms var(--ease-spring),
+    box-shadow 220ms var(--ease-out),
+    background-color 220ms var(--ease-out),
+    border-color 220ms var(--ease-out);
+}
+/* Lumen's cards emit; the radial sits on top of the paper colour. */
+[data-theme='lumen'] .card {
+  background-image: radial-gradient(120% 100% at 50% 0%, var(--card-emit) 0%, transparent 70%);
+}
+.card--interactive:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+}
+[data-theme='lumen'] .card--interactive:hover {
+  background-image: radial-gradient(
+    120% 100% at 50% 0%,
+    var(--card-emit-hover) 0%,
+    transparent 70%
+  );
+  border-color: var(--color-accent-weak);
+}
+@media (prefers-reduced-motion: reduce) {
+  .card--interactive:hover {
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Blueprint grid — Lumen's background discipline ("engineered, not vibed").
+   Transparent in Hum, so the same element is safe in both themes.
+   --------------------------------------------------------------------------- */
+.blueprint {
+  background-image:
+    linear-gradient(var(--rule-blueprint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rule-blueprint) 1px, transparent 1px),
+    radial-gradient(60% 50% at 78% 20%, var(--color-paper-emit) 0%, transparent 65%);
+  background-size:
+    var(--grid-cell) var(--grid-cell),
+    var(--grid-cell) var(--grid-cell),
+    100% 100%;
+}
+
+/* ---------------------------------------------------------------------------
+   Buttons.
+   Hum:   the press IS the feedback — a solid colour edge, lift then press down.
+   Lumen: instrument-grade — flat, hairline, no chunky edge, no bounce.
+   --------------------------------------------------------------------------- */
+.btn {
+  --btn-face: var(--color-accent);
+  --btn-ink: var(--color-accent-ink);
+  --btn-edge: var(--color-accent-deep);
+  --btn-cast: var(--btn-cast-accent);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 0.5rem 1.1rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  border: 0;
+  border-radius: var(--radius-pill);
+  color: var(--btn-ink);
+  background: var(--btn-face);
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow:
+    0 3px 0 0 var(--btn-edge),
+    0 5px 10px -3px var(--btn-cast);
+  transform: translateY(0);
+  transition:
+    transform 140ms var(--ease-press),
+    box-shadow 140ms var(--ease-press),
+    background-color 160ms var(--ease-press);
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 5px 0 0 var(--btn-edge),
+    0 11px 20px -4px var(--btn-cast);
+}
+.btn:active {
+  transform: translateY(3px);
+  box-shadow:
+    0 1px 0 0 var(--btn-edge),
+    0 2px 6px -2px var(--btn-cast);
+  transition-duration: 70ms;
+}
+/* Focus rings appear instantly — never transitioned. */
+.btn:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+.btn[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
+  box-shadow: 0 3px 0 0 var(--btn-edge);
+}
+
+.btn--soft {
+  --btn-face: var(--color-paper);
+  --btn-ink: var(--color-ink);
+  --btn-edge: transparent;
+  --btn-cast: var(--btn-cast-neutral);
+  border: 1px solid var(--color-rule);
+  box-shadow: 0 2px 8px -4px var(--btn-cast);
+}
+.btn--soft:hover {
+  background: var(--color-paper-3);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px -6px var(--btn-cast);
+}
+.btn--soft:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* Manifesto + Terminal: flat, square, no chunky edge. The rule and the type do
+   the work; depth is not part of either vocabulary. */
+[data-theme='manifesto'] .btn,
+[data-theme='terminal'] .btn {
+  box-shadow: none;
+  transition:
+    background-color 160ms var(--ease-out),
+    border-color 160ms var(--ease-out),
+    color 160ms var(--ease-out);
+}
+[data-theme='manifesto'] .btn:hover,
+[data-theme='terminal'] .btn:hover,
+[data-theme='manifesto'] .btn:active,
+[data-theme='terminal'] .btn:active {
+  transform: none;
+  box-shadow: none;
+}
+[data-theme='manifesto'] .btn {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+}
+[data-theme='manifesto'] .btn:hover {
+  background: var(--color-accent-hover);
+}
+[data-theme='terminal'] .btn:hover {
+  background: var(--color-accent-hover);
+}
+[data-theme='manifesto'] .btn--soft,
+[data-theme='terminal'] .btn--soft {
+  background: transparent;
+  border-color: var(--color-rule);
+  color: var(--color-ink-2);
+}
+[data-theme='manifesto'] .btn--soft:hover,
+[data-theme='terminal'] .btn--soft:hover {
+  background: var(--color-paper-3);
+  color: var(--color-ink);
+}
+[data-theme='manifesto'] .btn[disabled],
+[data-theme='terminal'] .btn[disabled] {
+  box-shadow: none;
+}
+
+/* Manifesto's display voice is a poster: heavy geometric caps. Applied to the
+   page headline only — never to h2/h3, which render resource names and data. */
+[data-theme='manifesto'] h1 {
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+/* Lumen: no chunky edge, no lift — a precise, flat control. */
+[data-theme='lumen'] .btn {
+  font-weight: 500;
+  border-radius: var(--radius-input);
+  box-shadow: none;
+  transition:
+    background-color 160ms var(--ease-out),
+    border-color 160ms var(--ease-out),
+    color 160ms var(--ease-out);
+}
+[data-theme='lumen'] .btn:hover {
+  transform: none;
+  background: var(--color-accent-hover);
+  box-shadow: none;
+}
+[data-theme='lumen'] .btn:active {
+  transform: none;
+  box-shadow: none;
+}
+[data-theme='lumen'] .btn--soft {
+  background: transparent;
+  border-color: var(--color-rule);
+  color: var(--color-ink-2);
+}
+[data-theme='lumen'] .btn--soft:hover {
+  background: var(--color-paper-3);
+  color: var(--color-ink);
+}
+[data-theme='lumen'] .btn[disabled] {
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn:hover,
+  .btn:active,
+  .btn--soft:hover,
+  .btn--soft:active {
+    transform: none;
+    transition-duration: 120ms;
+    transition-property: background-color, box-shadow, border-color, color;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Lumen's two-register typography: UI prose is lowercase, mono labels stay
+   UPPERCASE. Applied via an explicit class — NEVER globally on body — because
+   FHIR data is case-sensitive: resource types, ids, codes, names and JSON must
+   render exactly as the server sent them.
+   --------------------------------------------------------------------------- */
+[data-theme='lumen'] .ui-lower,
+[data-theme='lumen'] .btn {
+  text-transform: lowercase;
+}
+
+/* The verb landmark: one accent-coloured word, upright, with a drawn underline.
+   In Hum the same element is a pear highlight band instead. */
+.verb {
+  font-style: normal;
+  position: relative;
+  white-space: nowrap;
+}
+[data-theme='hum'] .verb {
+  background-image: linear-gradient(var(--color-accent) 0 0);
+  background-repeat: no-repeat;
+  background-size: 100% 0.32em;
+  background-position: 0 82%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+[data-theme='lumen'] .verb {
+  color: var(--color-accent-3);
+}
+[data-theme='lumen'] .verb::after {
+  content: '';
+  position: absolute;
+  left: 0.05em;
+  right: 0.05em;
+  bottom: 0.04em;
+  height: 1px;
+  background: var(--color-accent-3);
+  transform-origin: left;
+  animation: verb-underline 320ms var(--ease-soft) 300ms backwards;
+}
+@keyframes verb-underline {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-theme='lumen'] .verb::after {
+    animation: none;
+  }
+}

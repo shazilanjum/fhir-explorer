@@ -1,0 +1,356 @@
+/* Hallmark · designed-as-app · FOUR THEMES, switchable at runtime
+ *
+ *   [data-theme="hum"]        genre: playful     · light / rounded-sans     / multi-accent
+ *   [data-theme="lumen"]      genre: atmospheric · dark  / classical-serif  / brass + coral
+ *                             (Drop 01 · Night Foundry)
+ *   [data-theme="manifesto"]  genre: editorial   · light / geometric-sans   / signal red
+ *   [data-theme="terminal"]   genre: atmospheric · dark  / mono             / phosphor green
+ *
+ * NOTE on provenance: Hum and Lumen are transcribed from the per-theme specs
+ * bundled with the skill. Manifesto and Terminal have no bundled spec (their
+ * token blocks live in the skill's `site/css/tokens.css`, which is not part of
+ * the installed package), so they are CONSTRUCTED here from hallmark's
+ * documented axis values, its font canon, and the rules in `color.md`
+ * (OKLCH only · one-to-two accents · no pure black/white · neutrals tinted
+ * toward the anchor hue · accent chroma 0.12–0.22).
+ *
+ * :root carries only what BOTH themes share — the 4-pt space scale, the type
+ * scale, and motion. Everything expressive (palette, fonts, radii, shadows)
+ * lives in a per-theme block, so components never branch on the theme: they
+ * reference semantic tokens and the active theme resolves them.
+ */
+
+:root {
+  /* ---- Space (4-pt) — shared -------------------------------------------- */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4.5rem;
+
+  /* ---- Type scale — shared --------------------------------------------- */
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-md: 0.9375rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.75rem;
+
+  /* ---- Motion — shared ------------------------------------------------- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-press: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 120ms;
+  --dur-short: 200ms;
+  --dur-pulse: 4s;
+
+  /* Fallback so an unset data-theme still renders (defaults to Hum). */
+  color-scheme: light;
+}
+
+/* =========================================================================
+   THEME · Hum — playful. Cream paper, multi-accent, rounded, buttons press.
+   Bright pear/cyan/coral are FILL-ONLY; text uses the -text / link variants.
+   ========================================================================= */
+[data-theme='hum'] {
+  color-scheme: light;
+
+  --color-paper: oklch(97% 0.012 95);
+  --color-paper-2: oklch(94% 0.016 95);
+  --color-paper-3: oklch(91% 0.02 95);
+
+  --color-ink: oklch(20% 0.012 250);
+  --color-ink-2: oklch(40% 0.02 250);
+  --color-ink-3: oklch(50% 0.015 250);
+
+  --color-rule: oklch(88% 0.02 95);
+  --color-rule-2: oklch(92% 0.015 95);
+
+  /* pear — primary action, in-range, highlight band */
+  --color-accent: oklch(86% 0.18 95);
+  --color-accent-deep: oklch(72% 0.19 92);
+  --color-accent-hover: oklch(89% 0.18 95);
+  --color-accent-ink: oklch(20% 0.012 250);
+  --color-accent-weak: oklch(95% 0.06 95);
+  --color-accent-text: oklch(48% 0.12 85);
+
+  /* sky-cyan — links, references */
+  --color-accent-2: oklch(66% 0.18 235);
+  --color-accent-2-weak: oklch(95% 0.04 235);
+  --color-link: oklch(52% 0.17 245);
+  --color-link-hover: oklch(44% 0.18 248);
+
+  /* coral — the one pop */
+  --color-accent-3: oklch(68% 0.24 18);
+  --color-accent-3-weak: oklch(95% 0.05 18);
+
+  --color-danger: oklch(52% 0.21 22);
+  --color-danger-ink: oklch(99% 0.01 18);
+  --color-danger-weak: oklch(95% 0.05 18);
+  --color-focus: oklch(52% 0.17 245);
+
+  --color-mint: oklch(80% 0.16 150);
+  --color-lavender: oklch(74% 0.16 305);
+  --color-code-bg: oklch(24% 0.02 260);
+
+  /* Hum has no grid — the blueprint hairline is transparent here. */
+  --rule-blueprint: transparent;
+  --grid-cell: 48px;
+  --color-paper-emit: transparent;
+  --card-emit: transparent;
+  --card-emit-hover: transparent;
+
+  --font-display: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, Consolas, monospace;
+  --tracking-display: -0.025em;
+  --tracking-label: 0.1em;
+  --display-weight: 700;
+
+  --radius-input: 12px;
+  --radius-card: 20px;
+  --radius-pill: 999px;
+  --card-border-width: 1.5px;
+
+  --btn-cast-accent: oklch(76% 0.2 95 / 0.45);
+  --btn-cast-neutral: oklch(20% 0.012 250 / 0.14);
+
+  --shadow-card: 0 1px 2px -1px oklch(20% 0.012 250 / 0.08),
+    0 12px 32px -16px oklch(20% 0.012 250 / 0.12);
+  --shadow-card-hover: 0 2px 4px -1px oklch(20% 0.012 250 / 0.1),
+    0 18px 40px -18px oklch(20% 0.012 250 / 0.18);
+  --shadow-pop: 0 8px 28px -10px oklch(20% 0.012 250 / 0.18);
+}
+
+/* =========================================================================
+   THEME · Lumen — Drop 01 · Night Foundry.
+   Cool-violet near-black canvas (H 265), molten-brass accent that emits,
+   coral chord as the secondary. Classical serif display, lowercase UI prose,
+   UPPERCASE mono labels. Cards are hairline + lit from within — never dropped.
+   ========================================================================= */
+[data-theme='lumen'] {
+  color-scheme: dark;
+
+  --color-paper: oklch(13% 0.014 265);
+  --color-paper-2: oklch(11% 0.014 265); /* canvas sits *under* the panels */
+  --color-paper-3: oklch(19% 0.016 265);
+
+  --color-ink: oklch(96% 0.006 262);
+  --color-ink-2: oklch(74% 0.01 262);
+  --color-ink-3: oklch(58% 0.012 262);
+
+  --color-rule: oklch(96% 0.006 262 / 0.14);
+  --color-rule-2: oklch(96% 0.006 262 / 0.08);
+
+  /* molten brass (H 50, not amber) — primary action, in-range */
+  --color-accent: oklch(76% 0.17 50);
+  --color-accent-deep: oklch(62% 0.16 48);
+  --color-accent-hover: oklch(82% 0.16 50);
+  --color-accent-ink: oklch(13% 0.014 265); /* dark ink on a brass fill */
+  --color-accent-weak: oklch(76% 0.17 50 / 0.12);
+  --color-accent-text: oklch(80% 0.15 55);
+
+  /* brass carries links too — on this canvas it reads at high contrast */
+  --color-accent-2: oklch(68% 0.16 18);
+  --color-accent-2-weak: oklch(68% 0.16 18 / 0.14);
+  --color-link: oklch(80% 0.15 55);
+  --color-link-hover: oklch(88% 0.12 55);
+
+  /* coral chord — the verb landmark and the one pop */
+  --color-accent-3: oklch(68% 0.16 18);
+  --color-accent-3-weak: oklch(68% 0.16 18 / 0.14);
+
+  --color-danger: oklch(72% 0.17 25);
+  --color-danger-ink: oklch(13% 0.014 265);
+  --color-danger-weak: oklch(72% 0.17 25 / 0.14);
+  --color-focus: oklch(76% 0.17 50);
+
+  --color-mint: oklch(78% 0.14 160);
+  --color-lavender: oklch(74% 0.14 300);
+  --color-code-bg: oklch(17% 0.016 265);
+
+  /* Blueprint grid — "engineered, not vibed". 4% hairline. */
+  --rule-blueprint: oklch(96% 0.006 262 / 0.04);
+  --grid-cell: 48px;
+  --color-paper-emit: oklch(76% 0.17 50 / 0.04);
+  /* Cards are lit from within: 5% at rest, 12% on hover (spec caps at 6/12). */
+  --card-emit: oklch(76% 0.17 50 / 0.05);
+  --card-emit-hover: oklch(76% 0.17 50 / 0.12);
+
+  --font-display: 'Instrument Serif', 'Tiempos Headline', ui-serif, Georgia, serif;
+  --font-body: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, Consolas, monospace;
+  --tracking-display: -0.032em;
+  --tracking-label: 0.1em;
+  --display-weight: 400; /* Instrument Serif is delicate, not bold */
+
+  /* Engineered, not rounded — small radii. */
+  --radius-input: 4px;
+  --radius-card: 6px;
+  --radius-pill: 999px;
+  --card-border-width: 1px;
+
+  --btn-cast-accent: oklch(76% 0.17 50 / 0.28);
+  --btn-cast-neutral: oklch(0% 0 0 / 0.4);
+
+  /* Lumen never drop-shadows cards — the apparatus is the only thing that
+     emits. Elevated chrome (popovers) still gets depth. */
+  --shadow-card: none;
+  --shadow-card-hover: none;
+  --shadow-pop: 0 24px 60px -28px oklch(0% 0 0 / 0.55);
+}
+
+/* =========================================================================
+   THEME · Manifesto — editorial, declarative poster.
+   Warm bone paper, near-black warm ink, ONE signal-red accent. Heavy geometric
+   sans, square corners, thick rules, no shadows. Constructivist / agitprop
+   register: the type and the rule do the work, not depth.
+   ========================================================================= */
+[data-theme='manifesto'] {
+  color-scheme: light;
+
+  --color-paper: oklch(96% 0.008 40);
+  --color-paper-2: oklch(92% 0.011 40);
+  --color-paper-3: oklch(87% 0.013 40);
+
+  --color-ink: oklch(16% 0.012 40);
+  --color-ink-2: oklch(38% 0.013 40);
+  --color-ink-3: oklch(50% 0.011 40);
+
+  /* Rules are a design element here, not a whisper. */
+  --color-rule: oklch(16% 0.012 40 / 0.22);
+  --color-rule-2: oklch(16% 0.012 40 / 0.1);
+
+  /* signal red — the declarative accent */
+  --color-accent: oklch(52% 0.21 30);
+  --color-accent-deep: oklch(43% 0.19 30);
+  --color-accent-hover: oklch(47% 0.21 30);
+  --color-accent-ink: oklch(97% 0.008 40);
+  --color-accent-weak: oklch(93% 0.05 30);
+  --color-accent-text: oklch(47% 0.2 30);
+
+  --color-accent-2: oklch(16% 0.012 40);
+  --color-accent-2-weak: oklch(16% 0.012 40 / 0.08);
+  --color-link: oklch(47% 0.2 30);
+  --color-link-hover: oklch(38% 0.18 30);
+
+  --color-accent-3: oklch(52% 0.21 30);
+  --color-accent-3-weak: oklch(93% 0.05 30);
+
+  /* Deeper + cooler than the accent so an error never reads as a CTA. */
+  --color-danger: oklch(42% 0.19 14);
+  --color-danger-ink: oklch(97% 0.008 40);
+  --color-danger-weak: oklch(92% 0.045 14);
+  --color-focus: oklch(52% 0.21 30);
+
+  --color-mint: oklch(58% 0.14 155);
+  --color-lavender: oklch(52% 0.16 290);
+  --color-code-bg: oklch(18% 0.014 40);
+
+  --rule-blueprint: transparent;
+  --grid-cell: 48px;
+  --color-paper-emit: transparent;
+  --card-emit: transparent;
+  --card-emit-hover: transparent;
+
+  /* Geist collapses to a single family — explicitly allowed for Manifesto,
+     where "the body voice carries the brand" (typography.md). */
+  --font-display: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, Consolas, monospace;
+  --tracking-display: -0.02em;
+  --tracking-label: 0.12em;
+  --display-weight: 800;
+
+  /* Square. A poster has no rounded corners. */
+  --radius-input: 0px;
+  --radius-card: 0px;
+  --radius-pill: 2px;
+  --card-border-width: 2px;
+
+  --btn-cast-accent: transparent;
+  --btn-cast-neutral: transparent;
+
+  --shadow-card: none;
+  --shadow-card-hover: none;
+  --shadow-pop: 0 10px 0 -4px oklch(16% 0.012 40 / 0.18);
+}
+
+/* =========================================================================
+   THEME · Terminal — atmospheric, monospace-everywhere.
+   Near-black green-tilted canvas, phosphor-green primary, amber as the second
+   phosphor. Monospace IS the design choice here (typography.md sanctions the
+   single-family page for a true terminal aesthetic). Square, flat, no shadows.
+   ========================================================================= */
+[data-theme='terminal'] {
+  color-scheme: dark;
+
+  --color-paper: oklch(13% 0.014 155);
+  --color-paper-2: oklch(10% 0.012 155);
+  --color-paper-3: oklch(19% 0.018 155);
+
+  --color-ink: oklch(93% 0.03 150);
+  --color-ink-2: oklch(73% 0.04 150);
+  --color-ink-3: oklch(57% 0.04 150);
+
+  --color-rule: oklch(93% 0.03 150 / 0.16);
+  --color-rule-2: oklch(93% 0.03 150 / 0.08);
+
+  /* phosphor green */
+  --color-accent: oklch(82% 0.2 145);
+  --color-accent-deep: oklch(68% 0.18 145);
+  --color-accent-hover: oklch(88% 0.18 145);
+  --color-accent-ink: oklch(12% 0.014 155);
+  --color-accent-weak: oklch(82% 0.2 145 / 0.14);
+  --color-accent-text: oklch(84% 0.18 148);
+
+  /* amber — the other authentic terminal phosphor */
+  --color-accent-2: oklch(80% 0.16 75);
+  --color-accent-2-weak: oklch(80% 0.16 75 / 0.14);
+  --color-link: oklch(84% 0.18 148);
+  --color-link-hover: oklch(91% 0.15 148);
+
+  --color-accent-3: oklch(80% 0.16 75);
+  --color-accent-3-weak: oklch(80% 0.16 75 / 0.14);
+
+  --color-danger: oklch(71% 0.19 25);
+  --color-danger-ink: oklch(12% 0.014 155);
+  --color-danger-weak: oklch(71% 0.19 25 / 0.14);
+  --color-focus: oklch(82% 0.2 145);
+
+  --color-mint: oklch(84% 0.16 160);
+  --color-lavender: oklch(76% 0.13 295);
+  --color-code-bg: oklch(10% 0.012 155);
+
+  /* A faint scan grid — the terminal's equivalent of Lumen's blueprint. */
+  --rule-blueprint: oklch(93% 0.03 150 / 0.035);
+  --grid-cell: 32px;
+  --color-paper-emit: oklch(82% 0.2 145 / 0.03);
+  --card-emit: transparent;
+  --card-emit-hover: oklch(82% 0.2 145 / 0.05);
+
+  --font-display: 'JetBrains Mono Variable', ui-monospace, Consolas, monospace;
+  --font-body: 'JetBrains Mono Variable', ui-monospace, Consolas, monospace;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, Consolas, monospace;
+  --tracking-display: -0.01em;
+  --tracking-label: 0.12em;
+  --display-weight: 700;
+
+  --radius-input: 2px;
+  --radius-card: 2px;
+  --radius-pill: 2px;
+  --card-border-width: 1px;
+
+  --btn-cast-accent: transparent;
+  --btn-cast-neutral: transparent;
+
+  --shadow-card: none;
+  --shadow-card-hover: none;
+  --shadow-pop: 0 20px 50px -24px oklch(0% 0 0 / 0.6);
+}

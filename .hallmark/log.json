@@ -1,0 +1,61 @@
+[
+  {
+    "date": "2026-07-31",
+    "scope": "app",
+    "genre": "atmospheric",
+    "macrostructure": "Workbench",
+    "theme": "terminal",
+    "theme_axes": "dark / mono / phosphor-green (H 145) + amber (H 75)",
+    "vibe": "monospace everywhere, phosphor CRT",
+    "enrichment": "none",
+    "brief": "FHIR Resource Explorer · added Terminal as a fourth switchable theme",
+    "note": "CONSTRUCTED palette — no bundled theme spec; derived from documented axes + color.md rules"
+  },
+  {
+    "date": "2026-07-31",
+    "scope": "app",
+    "genre": "editorial",
+    "macrostructure": "Workbench",
+    "theme": "manifesto",
+    "theme_axes": "light / geometric-sans / signal-red (H 30)",
+    "vibe": "declarative poster, square and flat",
+    "enrichment": "none",
+    "brief": "FHIR Resource Explorer · added Manifesto as a third switchable theme",
+    "note": "CONSTRUCTED palette — no bundled theme spec; derived from documented axes + color.md rules"
+  },
+  {
+    "date": "2026-07-31",
+    "scope": "app",
+    "genre": "atmospheric",
+    "macrostructure": "Workbench",
+    "theme": "lumen",
+    "drop": "night",
+    "theme_axes": "dark / classical-serif-lowercase / molten-brass (H 50) + coral chord (H 18)",
+    "vibe": "instrument-grade, after-hours",
+    "enrichment": "none (no apparatus — app shell has no hero)",
+    "brief": "FHIR Resource Explorer · added Lumen Night Foundry as a second switchable theme alongside Hum; user requested lumen-01",
+    "note": "multi-theme project: themes coexist under [data-theme]; diversification is suspended, both are intentional variants"
+  },
+  {
+    "date": "2026-07-31",
+    "scope": "app",
+    "genre": "playful",
+    "macrostructure": "Workbench",
+    "theme": "Hum",
+    "theme_axes": "light / rounded-sans / multi-accent (pear 95 · cyan 235 · coral 18)",
+    "vibe": "warm and alive, but still an instrument",
+    "enrichment": "none",
+    "brief": "FHIR Resource Explorer · retheme from Graphite & Jade to Hum · user asked for fun/playful"
+  },
+  {
+    "date": "2026-07-30",
+    "scope": "app",
+    "genre": "modern-minimal",
+    "macrostructure": "Workbench",
+    "theme": "custom",
+    "theme_axes": "light / grotesk-sans / chromatic-other (jade)",
+    "vibe": "developer instrument, clinical, mono-forward",
+    "enrichment": "none",
+    "brief": "FHIR Resource Explorer · Postman-for-FHIR developer tool · Graphite & Jade design system (design.md)"
+  }
+]

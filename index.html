@@ -1,0 +1,32 @@
+<!doctype html>
+<!-- data-theme is set here so the first paint is already themed; ThemeProvider
+     takes over on mount. -->
+<html lang="en" data-theme="hum">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FHIR Resource Explorer</title>
+    <script>
+      // Reads the same localStorage key ThemeContext writes to
+      // ("fhir-explorer:theme") and sets data-theme before first paint, so a
+      // reload with Lumen/Terminal (dark) selected never flashes light Hum.
+      // Keep this in sync with src/context/ThemeContext.tsx's THEME_STORAGE_KEY.
+      (function () {
+        try {
+          var known = ['hum', 'lumen', 'manifesto', 'terminal'];
+          var stored = localStorage.getItem('fhir-explorer:theme');
+          if (stored && known.indexOf(stored) !== -1) {
+            document.documentElement.setAttribute('data-theme', stored);
+          }
+        } catch (e) {
+          // localStorage unavailable — fall back to the static default below.
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
