@@ -3,10 +3,12 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import { ServerProvider } from './context/ServerContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { ExperienceProvider } from './context/ExperienceContext';
 import { Layout } from './components/Layout';
 import { WelcomeView } from './components/WelcomeView';
 import { SearchView } from './components/SearchView';
 import { ResourceDetail } from './components/ResourceDetail';
+import { LandingPage } from './components/landing/LandingPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,6 +19,9 @@ const queryClient = new QueryClient({
 });
 
 const router = createBrowserRouter([
+  // Standalone — deliberately outside <Layout>, so it owns the full viewport
+  // rather than sitting inside the explorer's command-bar/rail shell.
+  { path: '/welcome', element: <LandingPage /> },
   {
     path: '/',
     element: <Layout />,
@@ -32,10 +37,12 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <ServerProvider>
-          <RouterProvider router={router} />
-          <Toaster position="bottom-right" richColors closeButton />
-        </ServerProvider>
+        <ExperienceProvider>
+          <ServerProvider>
+            <RouterProvider router={router} />
+            <Toaster position="bottom-right" richColors closeButton />
+          </ServerProvider>
+        </ExperienceProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

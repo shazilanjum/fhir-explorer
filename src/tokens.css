@@ -48,7 +48,12 @@
   --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-fast: 120ms;
   --dur-short: 200ms;
+  --dur-sheet: 300ms;
   --dur-pulse: 4s;
+
+  /* Code surfaces stay dark in every theme, so their foreground is a shared
+     light colour instead of inheriting a theme's paper colour. */
+  --color-code-ink: oklch(96% 0.01 260);
 
   /* Fallback so an unset data-theme still renders (defaults to Hum). */
   color-scheme: light;
@@ -97,6 +102,9 @@
 
   --color-mint: oklch(80% 0.16 150);
   --color-lavender: oklch(74% 0.16 305);
+  /* The code surface is deliberately dark in every theme (even Hum's light
+     one), so its text is a fixed light colour too — never `--color-ink`,
+     which would go dark-on-dark on Lumen/Terminal where paper is dark. */
   --color-code-bg: oklch(24% 0.02 260);
 
   /* Hum has no grid — the blueprint hairline is transparent here. */

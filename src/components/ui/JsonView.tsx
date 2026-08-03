@@ -45,8 +45,7 @@ export function JsonView({ value }: { value: unknown }) {
 
   return (
     <pre
-      className="scrollbar-thin h-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap break-words rounded-card p-4 font-mono text-xs leading-relaxed text-paper"
-      style={{ backgroundColor: 'var(--color-code-bg)' }}
+      className="scrollbar-thin h-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap break-words rounded-card bg-code p-4 font-mono text-xs leading-relaxed text-code-ink"
     >
       <code>{json}</code>
     </pre>

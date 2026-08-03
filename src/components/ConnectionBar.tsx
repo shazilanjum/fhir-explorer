@@ -8,10 +8,10 @@ import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { useServer } from '../context/ServerContext';
 import { useCapabilityStatement } from '../hooks/useFhir';
+import { ExperienceSettings } from './ExperienceSettings';
 import { openCommandPalette } from './CommandPalette';
 import { openRequestInspector, useRequestLog } from './RequestInspector';
 import { PresetSelect } from './ui/PresetSelect';
-import { ThemeSwitcher } from './ui/ThemeSwitcher';
 import { TokenControl } from './ui/TokenControl';
 import { DelayedSpinner } from './ui/primitives';
 
@@ -113,10 +113,8 @@ export function ConnectionBar({ onToggleSidebar }: { onToggleSidebar: () => void
             {dirty ? 'Connect' : 'Reconnect'}
           </button>
           <TokenControl />
+          <ExperienceSettings />
           <RequestInspectorButton />
-          <div className="hidden lg:block">
-            <ThemeSwitcher />
-          </div>
         </div>
 
         {/* Live connection readout */}

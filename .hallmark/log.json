@@ -1,5 +1,31 @@
 [
   {
+    "date": "2026-08-03",
+    "scope": "welcome-variant",
+    "genre": "playful",
+    "macrostructure": "Stat-Led",
+    "theme": "multi-theme (Hum / Lumen / Manifesto / Terminal)",
+    "theme_axes": "existing semantic tokens / capability-driven orbit colours / mono system labels",
+    "vibe": "live FHIR orrery, technical wonder",
+    "enrichment": "E5 Custom Illustration Centerpiece / Tier-A CSS geometry with manual scrub",
+    "brief": "FHIR Resource Explorer / capability-driven FHIR Orrery alternate welcome page",
+    "nav": "N7 Brutal slab",
+    "footer": "Ft5 Statement"
+  },
+  {
+    "date": "2026-08-03",
+    "scope": "welcome",
+    "genre": "playful",
+    "macrostructure": "Map / Diagram",
+    "theme": "multi-theme (Hum · Lumen · Manifesto · Terminal)",
+    "theme_axes": "existing semantic tokens / capability-driven line colours / mono transit labels",
+    "vibe": "live FHIR transit network, technical wonder",
+    "enrichment": "E5 Custom Illustration Centerpiece · Tier-B hand-built SVG",
+    "brief": "FHIR Resource Explorer · capability-driven FHIR Metro welcome page",
+    "nav": "N13 Inline command palette pill",
+    "footer": "Ft2 Inline rule single line"
+  },
+  {
     "date": "2026-07-31",
     "scope": "app",
     "genre": "atmospheric",

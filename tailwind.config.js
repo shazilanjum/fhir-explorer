@@ -11,6 +11,10 @@ export default {
           2: 'var(--color-paper-2)',
           3: 'var(--color-paper-3)',
         },
+        code: {
+          DEFAULT: 'var(--color-code-bg)',
+          ink: 'var(--color-code-ink)',
+        },
         ink: {
           DEFAULT: 'var(--color-ink)',
           2: 'var(--color-ink-2)',

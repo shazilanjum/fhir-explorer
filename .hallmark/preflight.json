@@ -1,0 +1,29 @@
+{
+  "date": "2026-08-03",
+  "artifact": "src/components/landing/FhirMetro.tsx",
+  "macrostructure": "Map / Diagram",
+  "audience": "FHIR developers and curious newcomers",
+  "use": "Connect to a server, understand its supported resources, and enter a resource route",
+  "tone": "playful technical wonder",
+  "theme": "existing multi-theme design system",
+  "enrichment": "Tier-B hand-built SVG transit map driven by CapabilityStatement data",
+  "navigation": "N13 inline command palette pill",
+  "footer": "Ft2 compact status and theme utility strip",
+  "scores": {
+    "philosophy": 5,
+    "hierarchy": 4,
+    "execution": 4,
+    "specificity": 5,
+    "restraint": 4,
+    "variety": 5
+  },
+  "alternatives": [
+    {
+      "artifact": "src/components/landing/FhirOrrery.tsx",
+      "macrostructure": "Stat-Led",
+      "enrichment": "E5 Tier-A CSS geometry driven by CapabilityStatement data with a manual orbit scrubber",
+      "navigation": "N7 brutal slab",
+      "footer": "Ft5 statement"
+    }
+  ]
+}
