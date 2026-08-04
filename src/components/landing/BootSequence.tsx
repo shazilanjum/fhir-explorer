@@ -12,7 +12,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { fhirClient } from '../../fhir/client';
-import { DEFAULT_BASE_URL } from '../../context/ServerContext';
+import { useServer } from '../../context/ServerContext';
 import { readStorage, writeStorage } from '../../lib/storage';
 
 const SEEN_KEY = 'bootSeen';
@@ -25,8 +25,16 @@ interface Line {
   typed: boolean;
 }
 
-function buildLines(result: BootResult): Line[] {
-  const target = new URL(DEFAULT_BASE_URL).host;
+function displayHost(url: string) {
+  try {
+    return new URL(url).host;
+  } catch {
+    return url;
+  }
+}
+
+function buildLines(result: BootResult, targetUrl: string): Line[] {
+  const target = displayHost(targetUrl);
   if (result.kind === 'ok') {
     return [
       { text: `connecting to ${target}_`, typed: true },
@@ -53,11 +61,11 @@ type BootResult =
   | { kind: 'ok'; ms: number; bytes: string; software: string; fhirVersion: string; resourceCount: number }
   | { kind: 'degraded'; reason: string };
 
-async function runRealBoot(): Promise<BootResult> {
+async function runRealBoot(targetUrl: string): Promise<BootResult> {
   const t0 = performance.now();
   try {
     const capability = await Promise.race([
-      fhirClient.getCapabilityStatement(DEFAULT_BASE_URL),
+      fhirClient.getCapabilityStatement(targetUrl),
       new Promise<never>((_, reject) =>
         window.setTimeout(() => reject(new Error('timeout')), FETCH_TIMEOUT_MS),
       ),
@@ -85,6 +93,7 @@ async function runRealBoot(): Promise<BootResult> {
 }
 
 export function BootSequence({ onDone }: { onDone: () => void }) {
+  const { baseUrl } = useServer();
   const reducedMotion = useMemo(
     () =>
       typeof window !== 'undefined' &&
@@ -120,13 +129,13 @@ export function BootSequence({ onDone }: { onDone: () => void }) {
   useEffect(() => {
     if (skip) return;
     let cancelled = false;
-    runRealBoot().then((result) => {
-      if (!cancelled) setLines(buildLines(result));
+    runRealBoot(baseUrl).then((result) => {
+      if (!cancelled) setLines(buildLines(result, baseUrl));
     });
     return () => {
       cancelled = true;
     };
-  }, [skip]);
+  }, [baseUrl, skip]);
 
   // Any key skips, not just a click while the overlay itself has focus.
   useEffect(() => {

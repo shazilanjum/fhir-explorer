@@ -11,7 +11,7 @@ import { Badge } from './ui/primitives';
 
 export function ResultCard({ resource, index = 0 }: { resource: AnyResource; index?: number }) {
   const summary = summarizeResource(resource);
-  const to = resource.id ? `/${resource.resourceType}/${resource.id}` : undefined;
+  const to = resource.id ? `/explore/${resource.resourceType}/${resource.id}` : undefined;
 
   // A type-aware instrument replaces the fields it already communicates, so the
   // same value never shows up twice on one card.

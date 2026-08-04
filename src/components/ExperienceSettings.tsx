@@ -49,20 +49,19 @@ export function ExperienceSettings() {
   const firstChoiceRef = useRef<HTMLButtonElement>(null);
   const requestedMode = new URLSearchParams(location.search).get('mode');
   const activeWelcomeMode =
-    location.pathname === '/welcome' && isWelcomeMode(requestedMode) ? requestedMode : welcomeMode;
+    location.pathname === '/' && isWelcomeMode(requestedMode) ? requestedMode : welcomeMode;
 
   function chooseWelcomeMode(mode: WelcomeMode) {
     setWelcomeMode(mode);
-    if (location.pathname === '/welcome') {
-      navigate(mode === 'orrery' ? '/welcome?mode=orrery' : '/welcome', { replace: true });
+    if (location.pathname === '/') {
+      navigate(mode === 'metro' ? '/?mode=metro' : '/', { replace: true });
     }
   }
 
   return (
     <Dialog.Root>
-      <Dialog.Trigger aria-label="Experience settings" title="Experience settings" className="inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-pill border border-rule bg-paper px-3 text-sm text-ink-2 outline-none transition-colors hover:bg-paper-3 hover:text-ink focus-visible:ring-2 focus-visible:ring-focus active:bg-paper-2 disabled:cursor-not-allowed disabled:opacity-[0.55]">
+      <Dialog.Trigger aria-label="Experience settings" title="Experience settings" className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-pill border border-rule bg-paper text-sm text-ink-2 outline-none transition-colors hover:bg-paper-3 hover:text-ink focus-visible:ring-2 focus-visible:ring-focus active:bg-paper-2 disabled:cursor-not-allowed disabled:opacity-[0.55]">
         <SettingsIcon />
-        <span className="hidden lg:inline">Settings</span>
       </Dialog.Trigger>
 
       <Dialog.Portal>
@@ -87,7 +86,7 @@ export function ExperienceSettings() {
             <section aria-labelledby="welcome-setting-title">
               <div>
                 <h2 id="welcome-setting-title" className="text-lg font-bold">Welcome page</h2>
-                <p className="mt-1 text-sm leading-relaxed text-ink-2">This becomes the default whenever you open the welcome route.</p>
+                <p className="mt-1 text-sm leading-relaxed text-ink-2">This becomes the default whenever you open the homepage.</p>
               </div>
               <div className="mt-4 grid gap-3">
                 {WELCOME_MODES.map((mode, index) => {

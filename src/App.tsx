@@ -8,6 +8,7 @@ import { Layout } from './components/Layout';
 import { WelcomeView } from './components/WelcomeView';
 import { SearchView } from './components/SearchView';
 import { ResourceDetail } from './components/ResourceDetail';
+import { PatientDossier } from './components/PatientDossier';
 import { LandingPage } from './components/landing/LandingPage';
 
 const queryClient = new QueryClient({
@@ -21,12 +22,14 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
   // Standalone — deliberately outside <Layout>, so it owns the full viewport
   // rather than sitting inside the explorer's command-bar/rail shell.
-  { path: '/welcome', element: <LandingPage /> },
+  { path: '/', element: <LandingPage /> },
   {
-    path: '/',
+    path: '/explore',
     element: <Layout />,
     children: [
       { index: true, element: <WelcomeView /> },
+      // More specific than :resourceType/:id, so it must be declared first.
+      { path: 'Patient/:id/dossier', element: <PatientDossier /> },
       { path: ':resourceType', element: <SearchView /> },
       { path: ':resourceType/:id', element: <ResourceDetail /> },
     ],

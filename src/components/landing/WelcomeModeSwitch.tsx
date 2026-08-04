@@ -15,7 +15,7 @@ export function WelcomeModeSwitch({
   return (
     <nav aria-label="Choose welcome experience" className={`inline-flex min-h-11 items-stretch bg-paper p-1 ${shell}`}>
       <Link
-        to="/welcome"
+        to="/"
         aria-current={active === 'metro' ? 'page' : undefined}
         className={`inline-flex min-h-9 items-center whitespace-nowrap px-3 font-mono text-xs uppercase tracking-wide outline-none transition-colors focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-paper active:bg-paper-3 ${item} ${
           active === 'metro' ? 'bg-ink text-paper' : 'text-ink-2 hover:bg-paper-2 hover:text-ink'
@@ -24,7 +24,7 @@ export function WelcomeModeSwitch({
         Metro
       </Link>
       <Link
-        to="/welcome?mode=orrery"
+        to="/"
         aria-current={active === 'orrery' ? 'page' : undefined}
         className={`inline-flex min-h-9 items-center whitespace-nowrap px-3 font-mono text-xs uppercase tracking-wide outline-none transition-colors focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-paper active:bg-paper-3 ${item} ${
           active === 'orrery' ? 'bg-ink text-paper' : 'text-ink-2 hover:bg-paper-2 hover:text-ink'

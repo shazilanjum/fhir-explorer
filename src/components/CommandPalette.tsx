@@ -88,7 +88,7 @@ export function CommandPalette() {
                 <Command.Item
                   key={h.id}
                   value={`recent ${h.resourceType} ${q}`}
-                  onSelect={() => run(`/${h.resourceType}${q ? `?${q}` : ''}`)}
+                  onSelect={() => run(`/explore/${h.resourceType}${q ? `?${q}` : ''}`)}
                   className={itemCls}
                 >
                   <span className="font-medium">{h.resourceType}</span>
@@ -101,7 +101,7 @@ export function CommandPalette() {
 
         <Command.Group heading="resource types" className={groupHeading}>
           {resourceTypes.map((type) => (
-            <Command.Item key={type} value={type} onSelect={() => run(`/${type}`)} className={itemCls}>
+            <Command.Item key={type} value={type} onSelect={() => run(`/explore/${type}`)} className={itemCls}>
               {type}
             </Command.Item>
           ))}

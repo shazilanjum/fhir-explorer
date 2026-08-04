@@ -1,0 +1,327 @@
+/* Hallmark · pre-emit critique: P4 H5 E5 S4 R5 V4
+ * Hallmark · genre: atmospheric · macrostructure: Workbench · design-system: design.md · designed-as-app
+ * enrichment: none beyond a quiet ghost orrery · tone: restrained terminal transition · theme: locked Terminal
+ * contrast: pass (40-41) · honest/chrome/tokens/icons: pass (30, 46-48) · mobile: pass (34, 49-57)
+ */
+
+.orrery-boot {
+  min-height: calc(100svh - 4.5rem);
+  padding: var(--space-lg) var(--space-md) var(--space-xl);
+  background-color: var(--color-paper-2);
+  color: var(--color-ink);
+}
+
+.orrery-boot__shell {
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.68fr) minmax(0, 1.32fr);
+  gap: clamp(var(--space-lg), 4vw, var(--space-2xl));
+  max-width: 96rem;
+  margin-inline: auto;
+  align-items: center;
+}
+
+.orrery-boot__lead {
+  min-width: 0;
+}
+
+.orrery-boot__eyebrow,
+.orrery-boot__status,
+.orrery-boot__visual-meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.orrery-boot__eyebrow {
+  color: var(--color-ink-2);
+}
+
+.orrery-boot__hero {
+  margin-top: var(--space-lg);
+}
+
+.orrery-boot__count,
+.orrery-boot__title span,
+.orrery-boot__copy span,
+.orrery-boot__resource-kicker,
+.orrery-boot__resource-name,
+.orrery-boot__resource-meta span,
+.orrery-boot__resource-action {
+  display: block;
+  border-radius: 0.125rem;
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in oklch, var(--color-paper-3) 84%, transparent) 0%,
+      color-mix(in oklch, var(--color-paper-3) 96%, var(--color-accent) 4%) 48%,
+      color-mix(in oklch, var(--color-paper-3) 84%, transparent) 100%
+    );
+  background-size: 220% 100%;
+  animation: orrery-boot-skeleton 2.8s var(--ease-in-out) infinite;
+}
+
+.orrery-boot__count {
+  width: clamp(5.75rem, 18vw, 8.5rem);
+  height: clamp(5.75rem, 18vw, 8.5rem);
+}
+
+.orrery-boot__title {
+  display: grid;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+
+.orrery-boot__title span {
+  height: clamp(2rem, 4vw, 3rem);
+}
+
+.orrery-boot__title span:nth-child(1) {
+  width: min(100%, 14rem);
+}
+
+.orrery-boot__title span:nth-child(2) {
+  width: min(100%, 16rem);
+}
+
+.orrery-boot__title span:nth-child(3) {
+  width: min(100%, 10rem);
+}
+
+.orrery-boot__copy {
+  display: grid;
+  gap: var(--space-xs);
+  margin-top: var(--space-lg);
+  max-width: 34rem;
+}
+
+.orrery-boot__copy span {
+  height: 0.875rem;
+}
+
+.orrery-boot__copy span:nth-child(1) {
+  width: 100%;
+}
+
+.orrery-boot__copy span:nth-child(2) {
+  width: 92%;
+}
+
+.orrery-boot__copy span:nth-child(3) {
+  width: 74%;
+}
+
+.orrery-boot__resource-card {
+  display: grid;
+  gap: var(--space-sm);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-rule);
+}
+
+.orrery-boot__resource-kicker {
+  width: 7.5rem;
+  height: 0.875rem;
+}
+
+.orrery-boot__resource-name {
+  width: min(100%, 9rem);
+  height: 2.25rem;
+}
+
+.orrery-boot__resource-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.orrery-boot__resource-meta span {
+  width: 7rem;
+  height: 0.875rem;
+}
+
+.orrery-boot__resource-action {
+  width: 10.5rem;
+  height: 2.75rem;
+  margin-top: var(--space-xs);
+}
+
+.orrery-boot__status {
+  display: grid;
+  gap: var(--space-sm);
+  margin-top: var(--space-xl);
+  color: var(--color-ink-2);
+}
+
+.orrery-boot__status-line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.orrery-boot__status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: none;
+  border-radius: 999px;
+  background-color: color-mix(in oklch, var(--color-accent) 70%, var(--color-paper));
+  animation: orrery-boot-pulse 1.5s steps(2, end) infinite;
+}
+
+.orrery-boot__status-bar {
+  height: 0.25rem;
+  overflow: clip;
+  background-color: var(--color-paper-3);
+}
+
+.orrery-boot__status-bar span {
+  display: block;
+  height: 100%;
+  background-color: color-mix(in oklch, var(--color-accent) 38%, var(--color-paper-3));
+  transition: width var(--dur-short) var(--ease-out);
+}
+
+.orrery-boot__visual {
+  min-width: 0;
+}
+
+.orrery-boot__ghost-frame {
+  position: relative;
+  aspect-ratio: 1;
+  width: 100%;
+  max-width: 42rem;
+  margin-inline: auto;
+  overflow: hidden;
+  border: 1px solid var(--color-rule);
+  background-color: color-mix(in oklch, var(--color-paper) 82%, var(--color-paper-2));
+}
+
+.orrery-boot__axis,
+.orrery-boot__ghost-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.orrery-boot__axis {
+  background-color: color-mix(in oklch, var(--color-rule) 70%, transparent);
+}
+
+.orrery-boot__axis--horizontal {
+  width: calc(100% - var(--space-2xl));
+  height: 1px;
+}
+
+.orrery-boot__axis--vertical {
+  width: 1px;
+  height: calc(100% - var(--space-2xl));
+}
+
+.orrery-boot__ghost-ring {
+  border: 2px solid;
+  border-radius: 999px;
+  opacity: 0.28;
+}
+
+.orrery-boot__ghost-ring--dashed {
+  border-style: dashed;
+}
+
+.orrery-boot__ghost-ring--dotted {
+  border-style: dotted;
+}
+
+.orrery-boot__ghost-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  width: 16%;
+  aspect-ratio: 1;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid color-mix(in oklch, var(--color-paper) 32%, white);
+  border-radius: 999px;
+  background-color: color-mix(in oklch, var(--color-accent) 72%, var(--color-paper));
+  color: var(--color-accent-ink);
+  font-family: var(--font-mono);
+  font-size: clamp(1.125rem, 1.5vw, 1.625rem);
+  font-weight: 700;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--color-accent) 20%, transparent);
+}
+
+.orrery-boot__ghost-planet {
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid;
+  border-radius: 999px;
+  background-color: color-mix(in oklch, var(--color-paper) 88%, transparent);
+  opacity: 0.6;
+  transform: translate(-50%, -50%);
+  transition:
+    left var(--dur-short) var(--ease-out),
+    top var(--dur-short) var(--ease-out);
+}
+
+.orrery-boot__visual-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-md);
+  max-width: 42rem;
+  margin: var(--space-md) auto 0;
+  color: var(--color-ink-2);
+}
+
+@keyframes orrery-boot-skeleton {
+  0% {
+    background-position: 120% 0;
+  }
+
+  100% {
+    background-position: -120% 0;
+  }
+}
+
+@keyframes orrery-boot-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (max-width: 64rem) {
+  .orrery-boot__shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .orrery-boot__visual {
+    order: -1;
+  }
+}
+
+@media (max-width: 32rem) {
+  .orrery-boot {
+    padding-inline: var(--space-sm);
+  }
+
+  .orrery-boot__status-line,
+  .orrery-boot__visual-meta {
+    white-space: nowrap;
+  }
+
+  .orrery-boot__visual-meta span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orrery-boot *,
+  .orrery-boot *::before,
+  .orrery-boot *::after {
+    animation-duration: 150ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

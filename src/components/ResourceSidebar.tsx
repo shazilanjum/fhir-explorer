@@ -82,7 +82,7 @@ export function ResourceSidebar({ onNavigate }: { onNavigate?: () => void }) {
               <li key={type}>
                 <button
                   type="button"
-                  onClick={() => go(`/${type}`)}
+                  onClick={() => go(`/explore/${type}`)}
                   className={`w-full truncate rounded-pill px-3 py-1.5 text-left font-mono text-sm transition-colors ${
                     active
                       ? 'bg-accent font-semibold text-accent-ink shadow-[0_2px_0_0_var(--color-accent-deep)]'
@@ -107,7 +107,7 @@ export function ResourceSidebar({ onNavigate }: { onNavigate?: () => void }) {
                 <li key={h.id}>
                   <button
                     type="button"
-                    onClick={() => go(`/${h.resourceType}${q ? `?${q}` : ''}`)}
+                    onClick={() => go(`/explore/${h.resourceType}${q ? `?${q}` : ''}`)}
                     className="w-full truncate rounded-pill px-3 py-1 text-left font-mono text-xs text-ink-2 transition-colors hover:bg-cyan-weak hover:text-link"
                     title={q || 'no parameters'}
                   >

@@ -34,7 +34,7 @@ export function LiveConnectCTA() {
 
   const open = () => {
     connect(committed);
-    navigate('/');
+    navigate('/explore');
   };
 
   const resourceCount = (() => {

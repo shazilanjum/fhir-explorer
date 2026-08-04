@@ -5,8 +5,8 @@
  * Tone: playful technical wonder. Enrichment: Tier-B hand-built SVG transit map.
  * Nav: N13 inline command pill. Footer: Ft2 compact status-and-theme utility strip.
  * Theme: the existing Hum · Lumen · Manifesto · Terminal system remains authoritative.
- * Handoff: contrast pass (40–41) · slop pass (42–45) · honest/chrome/tokens pass (46–48)
- * Responsive/mobile: pass (34, 49–57) · icons pass (30).
+ * Handoff: contrast pass (40-41) · slop pass (42-45) · honest/chrome/tokens pass (46-48)
+ * Responsive/mobile: pass (34, 49-57) · icons pass (30).
  */
 
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
@@ -209,7 +209,7 @@ function DesktopMap({
           return (
             <motion.a
               key={station.type}
-              href={`/${station.type}`}
+              href={`/explore/${station.type}`}
               onClick={(event) => {
                 event.preventDefault();
                 onSelect(station.type);
@@ -260,7 +260,11 @@ function DesktopMap({
   );
 }
 
-function MobileMap({ resourcesByType, selected, onSelect }: {
+function MobileMap({
+  resourcesByType,
+  selected,
+  onSelect,
+}: {
   resourcesByType: Map<string, CapabilityStatementResource>;
   selected: string;
   onSelect: (type: string) => void;
@@ -305,7 +309,10 @@ function MobileMap({ resourcesByType, selected, onSelect }: {
   );
 }
 
-function StationDetail({ station, resource }: {
+function StationDetail({
+  station,
+  resource,
+}: {
   station: Station | undefined;
   resource: CapabilityStatementResource | undefined;
 }) {
@@ -336,12 +343,12 @@ function StationDetail({ station, resource }: {
           {resource.profile ? 'This route advertises a server profile.' : 'This route uses the base FHIR profile.'}
         </p>
         <dl className="mt-6 grid grid-cols-2 gap-4 border-y border-rule py-4 font-mono text-xs">
-          <div><dt className="text-ink-3">INTERACTIONS</dt><dd className="mt-1 text-ink">{interactions.length || '—'}</dd></div>
+          <div><dt className="text-ink-3">INTERACTIONS</dt><dd className="mt-1 text-ink">{interactions.length || '-'}</dd></div>
           <div><dt className="text-ink-3">SEARCH KEYS</dt><dd className="mt-1 text-ink">{resource.searchParam?.length ?? 0}</dd></div>
         </dl>
         {interactions.length > 0 && <p className="mt-4 line-clamp-3 font-mono text-xs leading-relaxed text-ink-3">{interactions.join(' · ')}</p>}
-        <Link to={`/${station.type}`} className="btn mt-auto min-h-11 w-full">
-          Open resource <span aria-hidden="true">→</span>
+        <Link to={`/explore/${station.type}`} className="btn mt-auto min-h-11 w-full">
+          Open resource <span aria-hidden="true">{'->'}</span>
         </Link>
       </motion.aside>
     </AnimatePresence>
@@ -383,17 +390,22 @@ export function FhirMetro() {
   return (
     <div className="min-h-svh bg-paper-2 text-ink">
       <header className="mx-auto flex max-w-[96rem] items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:px-8">
-        <Link to="/welcome" className="flex min-h-11 items-center gap-2 rounded-input px-1 text-sm outline-none focus-visible:ring-2 focus-visible:ring-focus">
+        <Link to="/" className="flex min-h-11 items-center gap-2 rounded-input px-1 text-sm outline-none focus-visible:ring-2 focus-visible:ring-focus">
           <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-accent ring-2 ring-accent-deep/40" />
           <span className="font-display font-bold tracking-tight">fhir</span>
-          <span className="hidden text-ink-3 sm:inline">metro</span>
+          <span className="hidden font-display text-ink-3 sm:inline">explorer</span>
         </Link>
         <div className="flex items-center gap-2">
           <ExperienceSettings />
           <button type="button" onClick={openCommandPalette} className="flex min-h-11 items-center gap-2 rounded-pill border border-rule bg-paper px-3 text-sm text-ink-2 outline-none transition-colors hover:bg-paper-3 hover:text-ink focus-visible:ring-2 focus-visible:ring-focus" aria-label="Search resources and commands">
-            <SearchIcon /><span className="hidden sm:inline">Search resources</span><kbd className="hidden rounded-input bg-paper-3 px-1.5 py-0.5 font-mono text-xs text-ink-3 lg:inline">⌘K</kbd>
+            <SearchIcon />
+            <span className="hidden sm:inline">Search resources</span>
+            <kbd className="hidden rounded-input bg-paper-3 px-1.5 py-0.5 font-mono text-xs text-ink-3 lg:inline">⌘K</kbd>
           </button>
-          <Link to="/" aria-label="Open explorer" className="btn btn--soft min-h-11"><span className="hidden sm:inline">Open explorer</span><span aria-hidden="true">→</span></Link>
+          <Link to="/explore" aria-label="Open explorer" className="btn btn--soft min-h-11">
+            <span className="hidden sm:inline">Open explorer</span>
+            <span aria-hidden="true">{'->'}</span>
+          </Link>
         </div>
       </header>
 
@@ -410,7 +422,8 @@ export function FhirMetro() {
               <input type="url" required value={draftUrl} onChange={(event) => setDraftUrl(event.target.value)} className="h-12 w-full min-w-0 rounded-input border border-rule bg-paper px-4 font-mono text-sm text-ink outline outline-2 outline-transparent transition-colors placeholder:text-ink-3 hover:border-rule-2 focus-visible:outline-focus" aria-describedby="server-status" spellCheck={false} />
             </label>
             <button type="submit" className="btn h-12 min-w-32" disabled={capability.isFetching}>
-              {capability.isFetching && <DelayedSpinner className="h-4 w-4" />}{capability.isFetching ? 'Building map' : 'Build map'}
+              {capability.isFetching && <DelayedSpinner className="h-4 w-4" />}
+              {capability.isFetching ? 'Building map' : 'Build map'}
             </button>
             <div id="server-status" className="min-h-5 text-xs sm:col-span-2" aria-live="polite">
               {capability.isError ? <p className="text-danger">Could not read /metadata. Check the URL, CORS access, or your session token.</p> : capability.isSuccess ? <p className="font-mono text-ink-3">{displayHost(committedUrl)} · FHIR {capability.data.fhirVersion ?? 'version unknown'} · {resources.length} resources</p> : null}
@@ -424,7 +437,8 @@ export function FhirMetro() {
             <div className="flex flex-wrap gap-x-4 gap-y-2" aria-label="Metro line legend">
               {METRO_LINES.map((line) => (
                 <span key={line.id} className="inline-flex items-center gap-2 whitespace-nowrap font-mono text-xs text-ink-2">
-                  <span className="h-1 w-5 rounded-pill" style={{ backgroundColor: line.dash ? 'transparent' : line.color, borderTop: line.dash ? `2px dashed ${line.color}` : undefined }} aria-hidden="true" />{line.shortName}
+                  <span className="h-1 w-5 rounded-pill" style={{ backgroundColor: line.dash ? 'transparent' : line.color, borderTop: line.dash ? `2px dashed ${line.color}` : undefined }} aria-hidden="true" />
+                  {line.shortName}
                 </span>
               ))}
             </div>
@@ -432,7 +446,7 @@ export function FhirMetro() {
 
           <motion.div initial={reduceMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={reduceMotion ? { duration: 0 } : { duration: 0.45, ease: [0.16, 1, 0.3, 1] }} className="overflow-hidden rounded-card border border-rule bg-paper shadow-card">
             {capability.isFetching && !capability.data ? (
-              <div className="flex min-h-[28rem] items-center justify-center p-8 text-center"><div><DelayedSpinner className="mx-auto h-6 w-6 text-accent-deep" /><p className="mt-4 font-mono text-sm text-ink-2">Reading /metadata and laying track…</p></div></div>
+              <div className="flex min-h-[28rem] items-center justify-center p-8 text-center"><div><DelayedSpinner className="mx-auto h-6 w-6 text-accent-deep" /><p className="mt-4 font-mono text-sm text-ink-2">Reading /metadata and laying track...</p></div></div>
             ) : capability.isError ? (
               <div className="flex min-h-[28rem] items-center justify-center p-8 text-center"><div className="max-w-md"><p className="font-display text-xl text-ink">The network could not be drawn.</p><p className="mt-2 text-sm leading-relaxed text-ink-2">Try a public R4 endpoint or a server that permits browser requests, then build the map again.</p></div></div>
             ) : (

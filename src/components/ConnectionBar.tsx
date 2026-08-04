@@ -5,6 +5,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useServer } from '../context/ServerContext';
 import { useCapabilityStatement } from '../hooks/useFhir';
@@ -26,9 +27,6 @@ export function ConnectionBar({ onToggleSidebar }: { onToggleSidebar: () => void
     e.preventDefault();
     if (draft.trim()) connect(draft);
   };
-
-  const software = capability.data?.software;
-  const fhirVersion = capability.data?.fhirVersion;
 
   // Failures toast; success stays silent (the live dot carries it).
   const lastToast = useRef<string>('');
@@ -64,14 +62,14 @@ export function ConnectionBar({ onToggleSidebar }: { onToggleSidebar: () => void
         </button>
 
         {/* Wordmark — the dot is the character mark: pear, gently alive */}
-        <div className="flex items-center gap-2 text-sm text-ink">
+        <Link to="/" className="flex items-center gap-2 text-sm text-ink">
           <span
             className="h-2.5 w-2.5 shrink-0 rounded-full bg-accent ring-2 ring-accent-deep/40"
             aria-hidden="true"
           />
           <span className="font-display font-bold tracking-tight">fhir</span>
           <span className="hidden font-display text-ink-3 sm:inline">explorer</span>
-        </div>
+        </Link>
 
         <button
           type="button"
@@ -113,8 +111,8 @@ export function ConnectionBar({ onToggleSidebar }: { onToggleSidebar: () => void
             {dirty ? 'Connect' : 'Reconnect'}
           </button>
           <TokenControl />
-          <ExperienceSettings />
           <RequestInspectorButton />
+          <ExperienceSettings />
         </div>
 
         {/* Live connection readout */}
@@ -127,16 +125,6 @@ export function ConnectionBar({ onToggleSidebar }: { onToggleSidebar: () => void
           {capability.isError && (
             <span className="inline-flex items-center gap-1.5 rounded-pill bg-danger-weak px-2 py-0.5 text-danger">
               <span className="h-1.5 w-1.5 rounded-full bg-pop" /> connection failed
-            </span>
-          )}
-          {capability.isSuccess && (
-            <span className="inline-flex max-w-[42ch] items-center gap-1.5 rounded-pill bg-accent-weak px-2 py-0.5 text-ink-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent-deep" aria-label="connected" />
-              <span className="truncate">
-                {software?.name ?? 'server'}
-                {software?.version ? ` ${software.version}` : ''}
-                {fhirVersion ? ` · R${fhirVersion.charAt(0)} ${fhirVersion}` : ''}
-              </span>
             </span>
           )}
         </div>

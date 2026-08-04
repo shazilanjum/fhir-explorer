@@ -1,7 +1,7 @@
 /*
  * Hallmark · pre-emit critique: P5 H4 E4 S5 R4 V5
  * Macrostructure: Stat-Led · tone: playful technical wonder · anchor: live resource count.
- * Enrichment: E5 Custom Illustration Centerpiece · Tier-A CSS orrery · manual time scrub.
+ * Enrichment: E5 Custom Illustration Centerpiece · Tier-A CSS orrery · live orbital clock + dedicated boot loader.
  * Nav: N7 Brutal slab · footer: Ft5 Statement · theme: locked four-theme system.
  * Handoff: contrast pass (40-41) / slop pass (42-45) / honest, chrome, tokens, and icons pass (30, 46-48).
  * Responsive: pass (34, 49-57) / global html/body overflow-x: clip retained.
@@ -15,6 +15,7 @@ import { useCapabilityStatement } from '../../hooks/useFhir';
 import { openCommandPalette } from '../CommandPalette';
 import { ExperienceSettings } from '../ExperienceSettings';
 import { DelayedSpinner } from '../ui/primitives';
+import './OrreryBoot.css';
 
 type OrbitId = 'clinical' | 'workflow' | 'medication' | 'foundation';
 
@@ -24,6 +25,7 @@ interface OrbitDefinition {
   color: string;
   radius: number;
   offset: number;
+  speed: number;
   borderStyle: 'solid' | 'dashed' | 'dotted';
   resources: string[];
 }
@@ -41,6 +43,7 @@ const ORBITS: OrbitDefinition[] = [
     color: 'var(--color-accent-2)',
     radius: 18,
     offset: 4,
+    speed: 1.4,
     borderStyle: 'solid',
     resources: ['Patient', 'Encounter', 'Observation', 'Condition'],
   },
@@ -50,6 +53,7 @@ const ORBITS: OrbitDefinition[] = [
     color: 'var(--color-accent-deep)',
     radius: 26,
     offset: 38,
+    speed: 1,
     borderStyle: 'dashed',
     resources: ['Appointment', 'ServiceRequest', 'CarePlan', 'Task'],
   },
@@ -59,6 +63,7 @@ const ORBITS: OrbitDefinition[] = [
     color: 'var(--color-accent-3)',
     radius: 34,
     offset: 76,
+    speed: 0.72,
     borderStyle: 'dotted',
     resources: ['Medication', 'MedicationRequest', 'MedicationDispense', 'MedicationAdministration'],
   },
@@ -68,6 +73,7 @@ const ORBITS: OrbitDefinition[] = [
     color: 'var(--color-lavender)',
     radius: 42,
     offset: 112,
+    speed: 0.5,
     borderStyle: 'dashed',
     resources: ['Practitioner', 'Organization', 'CodeSystem', 'ValueSet'],
   },
@@ -102,6 +108,10 @@ function planetSize(resource: CapabilityStatementResource) {
   return 44;
 }
 
+function wrapDegrees(value: number) {
+  return ((value % 360) + 360) % 360;
+}
+
 function SearchIcon() {
   return (
     <svg viewBox="0 0 20 20" className="h-4 w-4" aria-hidden="true" fill="none">
@@ -111,9 +121,140 @@ function SearchIcon() {
   );
 }
 
+function OrreryHeader() {
+  return (
+    <header className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-ink bg-paper px-4 py-3 sm:px-6 lg:px-8">
+      <Link to="/" className="flex min-h-11 items-center gap-2 whitespace-nowrap text-sm text-ink outline-none focus-visible:ring-2 focus-visible:ring-focus">
+        <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-accent ring-2 ring-accent-deep/40" aria-hidden="true" />
+        <span className="font-display font-bold tracking-tight">fhir</span>
+        <span className="hidden font-display text-ink-3 sm:inline">explorer</span>
+      </Link>
+      <div className="flex items-center gap-2">
+        <ExperienceSettings />
+        <button type="button" onClick={openCommandPalette} className="flex min-h-11 items-center gap-2 border-2 border-ink bg-paper px-3 font-mono text-xs uppercase tracking-wide text-ink outline-none transition-colors hover:bg-paper-3 focus-visible:ring-2 focus-visible:ring-focus active:translate-y-px" aria-label="Search resources and commands">
+          <SearchIcon />
+          <span className="hidden lg:inline">Search</span>
+        </button>
+        <Link to="/explore" aria-label="Open explorer" className="btn min-h-11 !rounded-none">
+          <span className="hidden sm:inline">Open explorer</span>
+          <span aria-hidden="true">{'->'}</span>
+        </Link>
+      </div>
+    </header>
+  );
+}
+
+const BOOT_STEPS = [
+  'Opening channel',
+  'Reading CapabilityStatement',
+  'Indexing resource surface',
+  'Preparing landmark orbits',
+];
+
+function LoadingOrrery({ reducedMotion }: { reducedMotion: boolean }) {
+  const [activeStep, setActiveStep] = useState(reducedMotion ? BOOT_STEPS.length - 1 : 0);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+    const timer = window.setInterval(() => {
+      setActiveStep((step) => Math.min(step + 1, BOOT_STEPS.length - 1));
+    }, 520);
+    return () => window.clearInterval(timer);
+  }, [reducedMotion]);
+
+  const status = BOOT_STEPS[activeStep] ?? BOOT_STEPS[BOOT_STEPS.length - 1];
+
+  return (
+    <main className="orrery-boot" aria-busy="true" aria-labelledby="orrery-boot-title">
+      <div className="orrery-boot__shell">
+        <section className="orrery-boot__lead" aria-live="polite">
+          <div className="orrery-boot__hero" aria-hidden="true">
+            <span className="orrery-boot__count" />
+            <div className="orrery-boot__title">
+              <span />
+              <span />
+              <span />
+            </div>
+            <div className="orrery-boot__copy">
+              <span />
+              <span />
+              <span />
+            </div>
+          </div>
+
+          <div className="orrery-boot__resource-card" aria-hidden="true">
+            <span className="orrery-boot__resource-kicker" />
+            <span className="orrery-boot__resource-name" />
+            <div className="orrery-boot__resource-meta">
+              <span />
+              <span />
+            </div>
+            <span className="orrery-boot__resource-action" />
+          </div>
+
+          <div className="orrery-boot__status" role="status">
+            <div className="orrery-boot__status-line">
+              <span className="orrery-boot__status-dot" aria-hidden="true" />
+              <span id="orrery-boot-title">{status}</span>
+            </div>
+            <div className="orrery-boot__status-bar" aria-hidden="true">
+              <span style={{ width: `${((activeStep + 1) / BOOT_STEPS.length) * 100}%` }} />
+            </div>
+          </div>
+        </section>
+
+        <section className="orrery-boot__visual" aria-hidden="true">
+          <div className="orrery-boot__ghost-frame">
+            <span className="orrery-boot__axis orrery-boot__axis--horizontal" />
+            <span className="orrery-boot__axis orrery-boot__axis--vertical" />
+
+            {ORBITS.map((orbit) => (
+              <span
+                key={orbit.id}
+                className={`orrery-boot__ghost-ring orrery-boot__ghost-ring--${orbit.borderStyle}`}
+                style={{
+                  width: `${orbit.radius * 2}%`,
+                  height: `${orbit.radius * 2}%`,
+                  borderColor: orbit.color,
+                }}
+              />
+            ))}
+
+            <div className="orrery-boot__ghost-core">
+              <span>FHIR</span>
+            </div>
+
+            {ORBITS.map((orbit) => {
+              const angle = ((orbit.offset + activeStep * 18) * Math.PI) / 180;
+              const left = 50 + orbit.radius * Math.cos(angle);
+              const top = 50 + orbit.radius * Math.sin(angle);
+              return (
+                <span
+                  key={`${orbit.id}-planet`}
+                  className="orrery-boot__ghost-planet"
+                  style={{
+                    left: `${left}%`,
+                    top: `${top}%`,
+                    borderColor: orbit.color,
+                  }}
+                />
+              );
+            })}
+          </div>
+          <div className="orrery-boot__visual-meta">
+            <span>Preparing orbit map</span>
+            <span>{String(activeStep + 1).padStart(2, '0')} / {String(BOOT_STEPS.length).padStart(2, '0')}</span>
+          </div>
+        </section>
+      </div>
+    </main>
+  );
+}
+
 function Orrery({
   planets,
   phase,
+  autoPhase,
   selected,
   onSelect,
   host,
@@ -121,6 +262,7 @@ function Orrery({
 }: {
   planets: Planet[];
   phase: number;
+  autoPhase: number;
   selected: string;
   onSelect: (type: string) => void;
   host: string;
@@ -157,7 +299,8 @@ function Orrery({
         </div>
 
         {planets.map((planet) => {
-          const angle = ((planet.angle + phase) * Math.PI) / 180;
+          const orbitPhase = wrapDegrees(phase + autoPhase * planet.orbit.speed);
+          const angle = ((planet.angle + orbitPhase) * Math.PI) / 180;
           const left = 50 + planet.orbit.radius * Math.cos(angle);
           const top = 50 + planet.orbit.radius * Math.sin(angle);
           const size = planetSize(planet.resource);
@@ -211,8 +354,15 @@ export function FhirOrrery() {
   const [draftUrl, setDraftUrl] = useState(baseUrl);
   const [committedUrl, setCommittedUrl] = useState(baseUrl);
   const [phase, setPhase] = useState(0);
+  const [autoPhase, setAutoPhase] = useState(0);
   const [selected, setSelected] = useState('Patient');
   const capability = useCapabilityStatement(committedUrl, token);
+  const reducedMotion = useMemo(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    [],
+  );
 
   const resources = useMemo(() => getResources(capability.data), [capability.data]);
   const resourcesByType = useMemo(
@@ -242,10 +392,27 @@ export function FhirOrrery() {
     if (planets.length && !resourcesByType.has(selected)) setSelected(planets[0].resource.type);
   }, [planets, resourcesByType, selected]);
 
+  useEffect(() => {
+    if (reducedMotion) return;
+    let frame = 0;
+    let previous = performance.now();
+
+    const tick = (now: number) => {
+      const elapsedSeconds = (now - previous) / 1000;
+      previous = now;
+      setAutoPhase((current) => wrapDegrees(current + elapsedSeconds * 10));
+      frame = window.requestAnimationFrame(tick);
+    };
+
+    frame = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(frame);
+  }, [reducedMotion]);
+
   const selectedPlanet = planets.find((planet) => planet.resource.type === selected);
   const selectedResource = selectedPlanet?.resource;
   const interactions = selectedResource?.interaction?.map((item) => item.code) ?? [];
   const host = displayHost(committedUrl);
+  const isInitialLoading = capability.isFetching && !capability.data;
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -258,36 +425,33 @@ export function FhirOrrery() {
     }
   }
 
+  if (isInitialLoading) {
+    return (
+      <div className="min-h-svh bg-paper-2 text-ink">
+        <OrreryHeader />
+        <LoadingOrrery reducedMotion={reducedMotion} />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-svh bg-paper-2 text-ink">
-      <header className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-ink bg-paper px-4 py-3 sm:px-6 lg:px-8">
-        <Link to="/welcome?mode=orrery" className="flex min-h-11 items-center gap-2 whitespace-nowrap font-display font-extrabold uppercase tracking-wide outline-none focus-visible:ring-2 focus-visible:ring-focus">
-          <span className="h-3 w-3 bg-pop" aria-hidden="true" />
-          FHIR Orrery
-        </Link>
-        <div className="flex items-center gap-2">
-          <ExperienceSettings />
-          <button type="button" onClick={openCommandPalette} className="flex min-h-11 items-center gap-2 border-2 border-ink bg-paper px-3 font-mono text-xs uppercase tracking-wide text-ink outline-none transition-colors hover:bg-paper-3 focus-visible:ring-2 focus-visible:ring-focus active:translate-y-px" aria-label="Search resources and commands">
-            <SearchIcon /><span className="hidden lg:inline">Search</span>
-          </button>
-          <Link to="/" aria-label="Open explorer" className="btn min-h-11 !rounded-none"><span className="hidden sm:inline">Open explorer</span><span aria-hidden="true">→</span></Link>
-        </div>
-      </header>
+      <OrreryHeader />
 
       <main>
-        <section className="mx-auto grid min-h-[72svh] max-w-[96rem] gap-8 px-4 pb-16 pt-8 sm:px-6 sm:pb-20 sm:pt-10 lg:grid-cols-[minmax(18rem,0.65fr)_minmax(0,1.35fr)] lg:items-center lg:px-8">
+        <section className="mx-auto grid max-w-[96rem] gap-8 px-4 pb-12 pt-8 sm:px-6 sm:pb-14 sm:pt-10 lg:grid-cols-[minmax(18rem,0.65fr)_minmax(0,1.35fr)] lg:items-center lg:px-8 lg:pb-10 lg:pt-8">
           <div className="min-w-0">
             <p className="font-mono text-sm text-ink-2">
-              {capability.isSuccess ? `${host} · FHIR ${capability.data.fhirVersion ?? 'version unknown'}` : 'Reading the server’s system model'}
+              {capability.isSuccess ? `${host} · FHIR ${capability.data.fhirVersion ?? 'version unknown'}` : "Reading the server's system model"}
             </p>
             <h1 className="mt-5 min-w-0 [overflow-wrap:anywhere] text-ink">
               <span className="block font-mono text-[clamp(5rem,13vw,10rem)] font-bold leading-none tabular-nums" aria-live="polite">
-                {capability.isSuccess ? resources.length : '—'}
+                {capability.isSuccess ? resources.length : '-'}
               </span>
               <span className="mt-3 block max-w-[12ch] text-3xl leading-[1.05] sm:text-4xl lg:text-5xl">resource worlds in motion.</span>
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-2">
-              Orbit size reflects searchable surface area. Drag time to move the system, then choose a world to inspect it.
+              Orbit size reflects searchable surface area. The system keeps turning on its own; drag the time offset to jump the whole map forward, then choose a world to inspect it.
             </p>
 
             <div className="mt-8 border-y border-rule py-5">
@@ -302,7 +466,9 @@ export function FhirOrrery() {
                     <span><strong className="text-ink">{interactions.length}</strong> interactions</span>
                     <span><strong className="text-ink">{selectedResource.searchParam?.length ?? 0}</strong> search keys</span>
                   </div>
-                  <Link to={`/${selectedResource.type}`} className="btn btn--soft mt-5 min-h-11">Open resource <span aria-hidden="true">→</span></Link>
+                  <Link to={`/explore/${selectedResource.type}`} className="btn btn--soft mt-5 min-h-11">
+                    Open resource <span aria-hidden="true">{'->'}</span>
+                  </Link>
                 </div>
               ) : (
                 <p className="text-sm text-ink-2">Choose a resource world after the server model loads.</p>
@@ -311,16 +477,13 @@ export function FhirOrrery() {
           </div>
 
           <div className="min-w-0">
-            {capability.isFetching && !capability.data ? (
-              <div className="flex aspect-square w-full max-w-[42rem] items-center justify-center border-2 border-rule bg-paper">
-                <div className="text-center"><DelayedSpinner className="mx-auto h-6 w-6 text-accent-deep" /><p className="mt-4 font-mono text-sm text-ink-2">Calculating orbits…</p></div>
-              </div>
-            ) : (
-              <Orrery planets={planets} phase={phase} selected={selected} onSelect={setSelected} host={host} resourceCount={resources.length} />
-            )}
+            <Orrery planets={planets} phase={phase} autoPhase={autoPhase} selected={selected} onSelect={setSelected} host={host} resourceCount={resources.length} />
 
             <label className="mx-auto mt-6 block w-full max-w-[42rem]">
-              <span className="mb-2 flex items-center justify-between gap-4 font-mono text-xs uppercase tracking-wide text-ink-2"><span>Orbit time</span><span>{phase}°</span></span>
+              <span className="mb-2 flex items-center justify-between gap-4 font-mono text-xs uppercase tracking-wide text-ink-2">
+                <span>Orbit offset</span>
+                <span>{phase}deg</span>
+              </span>
               <input type="range" min="0" max="359" value={phase} onChange={(event) => setPhase(Number(event.target.value))} className="h-11 w-full cursor-ew-resize accent-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus" aria-label="Move resources through their orbits" />
             </label>
           </div>
@@ -333,7 +496,8 @@ export function FhirOrrery() {
               <input type="url" required value={draftUrl} onChange={(event) => setDraftUrl(event.target.value)} aria-describedby="orrery-server-status" spellCheck={false} className="h-12 w-full min-w-0 rounded-input border border-rule bg-paper-2 px-4 font-mono text-sm text-ink outline outline-2 outline-transparent transition-colors hover:bg-paper-3 focus-visible:outline-focus" />
             </label>
             <button type="submit" className="btn h-12 min-w-36 !rounded-none" disabled={capability.isFetching}>
-              {capability.isFetching && <DelayedSpinner className="h-4 w-4" />}{capability.isFetching ? 'Calculating' : 'Rebuild system'}
+              {capability.isFetching && <DelayedSpinner className="h-4 w-4" />}
+              {capability.isFetching ? 'Calculating' : 'Rebuild system'}
             </button>
             <div id="orrery-server-status" className="min-h-5 text-xs sm:col-span-2" aria-live="polite">
               {capability.isError ? <p className="text-danger">The metadata endpoint could not be read. Check the URL, CORS access, or session token.</p> : capability.isSuccess ? <p className="font-mono text-ink-3">{resources.length} resource types · {planets.length} landmark worlds shown</p> : null}
@@ -342,7 +506,7 @@ export function FhirOrrery() {
         </section>
       </main>
 
-      <footer className="mx-auto grid max-w-[96rem] gap-8 px-4 pb-8 pt-14 sm:px-6 lg:grid-cols-[minmax(0,0.8fr)_minmax(24rem,1.2fr)] lg:items-end lg:px-8">
+      <footer className="mx-auto grid max-w-[96rem] gap-8 px-4 pb-8 pt-10 sm:px-6 lg:grid-cols-[minmax(0,0.8fr)_minmax(24rem,1.2fr)] lg:items-end lg:px-8 lg:pb-8 lg:pt-10">
         <p className="max-w-[22ch] font-display text-3xl leading-tight text-ink sm:text-4xl">The server is a system. Now you can see it.</p>
         <div className="flex items-center justify-between gap-4 border-t border-rule pt-4 font-mono text-xs text-ink-3">
           <span>{capability.isSuccess ? `${host} · model live` : 'Waiting for metadata'}</span>

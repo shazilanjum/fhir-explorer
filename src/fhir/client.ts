@@ -208,6 +208,35 @@ export const fhirClient = {
     return request<T>(`${normalizeBase(baseUrl)}/${resourceType}/${id}`, token);
   },
 
+  /** Read every version of a resource — the `_history` Bundle, newest first. */
+  async history<T extends FhirResourceBase = FhirResourceBase>(
+    baseUrl: string,
+    resourceType: string,
+    id: string,
+    token?: string,
+  ): Promise<Bundle<T>> {
+    return request<Bundle<T>>(
+      `${normalizeBase(baseUrl)}/${resourceType}/${id}/_history?_count=50`,
+      token,
+    );
+  },
+
+  /**
+   * Pull a patient's whole record via `Patient/{id}/$everything`. Returns the
+   * raw Bundle. Servers vary on support — callers should fall back to per-type
+   * `patient=` searches (see `usePatientEverything`).
+   */
+  async everything<T extends FhirResourceBase = FhirResourceBase>(
+    baseUrl: string,
+    patientId: string,
+    token?: string,
+  ): Promise<Bundle<T>> {
+    return request<Bundle<T>>(
+      `${normalizeBase(baseUrl)}/Patient/${patientId}/$everything?_count=200`,
+      token,
+    );
+  },
+
   /**
    * Resolve a single code via `CodeSystem/$lookup`. Returns the raw
    * `Parameters` resource — see `parseLookup` in `codings.ts`.

@@ -26,7 +26,7 @@ export const WELCOME_MODES = [
 
 export type WelcomeMode = (typeof WELCOME_MODES)[number]['id'];
 
-const DEFAULT_WELCOME_MODE: WelcomeMode = 'metro';
+const DEFAULT_WELCOME_MODE: WelcomeMode = 'orrery';
 const WELCOME_MODE_STORAGE_KEY = 'welcome-mode';
 
 export function isWelcomeMode(value: string | null): value is WelcomeMode {

@@ -35,6 +35,8 @@ import { InstrumentView } from './instruments';
 import { Sparkline, unitOf } from './instruments/Sparkline';
 import { ReferenceGraph } from './ReferenceGraph';
 import { TerminologyLens } from './TerminologyLens';
+import { FhirPathPlayground } from './FhirPathPlayground';
+import { VersionScrubber } from './VersionScrubber';
 import { JsonView } from './ui/JsonView';
 import { Badge, CopyButton, ErrorMessage, Skeleton } from './ui/primitives';
 
@@ -97,7 +99,7 @@ function ReferenceRow({
       <dd className="min-w-0 flex-1">
         {target.navigable && target.resourceType && target.id ? (
           <Link
-            to={`/${target.resourceType}/${target.id}`}
+            to={`/explore/${target.resourceType}/${target.id}`}
             className="break-all font-mono text-sm font-medium text-link underline decoration-cyan/40 underline-offset-2 transition-colors hover:text-link-hover hover:decoration-link"
             title={target.raw}
           >
@@ -225,6 +227,8 @@ function HumanReadable({ resource }: { resource: AnyResource }) {
           ))}
         </Section>
       )}
+
+      <FhirPathPlayground resource={resource} />
     </div>
   );
 }
@@ -244,7 +248,7 @@ export function ResourceDetail() {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-2 text-sm">
         <Link
-          to={`/${resourceType}`}
+          to={`/explore/${resourceType}`}
           className="rounded-pill font-mono font-medium text-link transition-colors hover:text-link-hover"
         >
           ← {resourceType}
@@ -252,6 +256,14 @@ export function ResourceDetail() {
         <span className="text-ink-3">/</span>
         <Badge tone="cyan">{resourceType}</Badge>
         <span className="font-mono text-xs text-ink-3">{id}</span>
+        {resourceType === 'Patient' && (
+          <Link
+            to={`/explore/Patient/${id}/dossier`}
+            className="ml-auto rounded-pill bg-accent-weak px-3 py-1 font-mono text-xs text-accent-text transition-colors hover:bg-accent hover:text-accent-ink"
+          >
+            view dossier →
+          </Link>
+        )}
       </div>
 
       {query.isLoading && (
@@ -295,6 +307,17 @@ export function ResourceDetail() {
           transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1], delay: 0.06 }}
         >
           <ReferenceGraph resource={query.data} />
+        </motion.section>
+      )}
+
+      {query.isSuccess && (
+        <motion.section
+          className="card"
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1], delay: 0.09 }}
+        >
+          <VersionScrubber resourceType={resourceType} id={id} />
         </motion.section>
       )}
     </div>

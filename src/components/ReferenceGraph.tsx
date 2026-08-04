@@ -268,7 +268,7 @@ export function ReferenceGraph({ resource }: { resource: AnyResource }) {
               key={`n-out-${n.resourceType}-${n.id}`}
               node={n}
               tone="outbound"
-              onOpen={() => navigate(`/${n.resourceType}/${n.id}`)}
+              onOpen={() => navigate(`/explore/${n.resourceType}/${n.id}`)}
             />
           ))}
           {inbound.map((n) => (
@@ -276,7 +276,7 @@ export function ReferenceGraph({ resource }: { resource: AnyResource }) {
               key={`n-in-${n.resourceType}-${n.id}`}
               node={n}
               tone="inbound"
-              onOpen={() => navigate(`/${n.resourceType}/${n.id}`)}
+              onOpen={() => navigate(`/explore/${n.resourceType}/${n.id}`)}
             />
           ))}
         </svg>

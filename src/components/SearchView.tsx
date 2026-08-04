@@ -4,7 +4,7 @@
  * re-runnable from history. The form edits a draft and commits to the URL.
  */
 
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import NumberFlow from '@number-flow/react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useServer } from '../context/ServerContext';
@@ -12,12 +12,16 @@ import { useSearch } from '../hooks/useFhir';
 import type { AnyResource } from '../fhir/types';
 import { SearchParamForm } from './SearchParamForm';
 import { ResultCard } from './ResultCard';
+import { Constellation } from './Constellation';
 import { DelayedSpinner, EmptyState, ErrorMessage, Skeleton } from './ui/primitives';
+
+type ResultView = 'grid' | 'graph';
 
 export function SearchView() {
   const { resourceType = '' } = useParams();
   const { baseUrl, token, addHistory } = useServer();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [view, setView] = useState<ResultView>('grid');
 
   const committed = useMemo(() => Object.fromEntries(searchParams.entries()), [searchParams]);
   const committedKey = searchParams.toString();
@@ -78,11 +82,34 @@ export function SearchView() {
 
       {resources.length > 0 && (
         <>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {resources.map((resource, i) => (
-              <ResultCard key={`${resource.id ?? 'x'}-${i}`} resource={resource} index={i} />
-            ))}
+          {/* Grid ↔ constellation toggle. */}
+          <div className="flex justify-end">
+            <div className="inline-flex rounded-pill border border-rule p-0.5 font-mono text-xs">
+              {(['grid', 'graph'] as const).map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  onClick={() => setView(v)}
+                  aria-pressed={view === v}
+                  className={`rounded-pill px-3 py-1 transition-colors ${
+                    view === v ? 'bg-accent text-accent-ink' : 'text-ink-3 hover:text-ink'
+                  }`}
+                >
+                  {v}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {view === 'graph' ? (
+            <Constellation resources={resources} />
+          ) : (
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {resources.map((resource, i) => (
+                <ResultCard key={`${resource.id ?? 'x'}-${i}`} resource={resource} index={i} />
+              ))}
+            </div>
+          )}
 
           <div className="flex items-center justify-center py-2">
             {query.hasNextPage ? (

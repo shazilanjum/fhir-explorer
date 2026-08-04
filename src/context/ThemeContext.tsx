@@ -29,7 +29,7 @@ export const THEMES = [
 
 export type ThemeId = (typeof THEMES)[number]['id'];
 
-export const DEFAULT_THEME: ThemeId = 'hum';
+export const DEFAULT_THEME: ThemeId = 'terminal';
 
 /** Exported so index.html's boot script and this module agree on the key. */
 export const THEME_STORAGE_KEY = 'theme';
